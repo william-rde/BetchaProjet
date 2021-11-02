@@ -73,7 +73,8 @@ const partie = new mongoose.Schema({
     Author: String,
     Enemy: String,
     State: String,
-    nbJeton: Number,
+    nbJetonAuteur: Number,
+    nbJetonEnemy: Number,
     mise: Number
 
 });
@@ -82,7 +83,8 @@ let GameModel = mongoose.model('game', partie);
 
 expressApp.post("/create", (req, res) => {
     console.log(req.body);
-    req.body.nbJeton = 100;
+    req.body.nbJetonAuteur = 100;
+    req.body.nbJetonEnemy = 100;
     // On crée une instance du Model
     let maPartie = new GameModel(req.body);
 
