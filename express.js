@@ -26,12 +26,14 @@ expressApp.use(express.static("public"))
 expressApp.use(express.urlencoded())
 
 
-expressApp.use(session({
+expressApp.use(
+    session({
     secret:'key that will sign cookie',
     resave:false,
     saveUninitialized: false,
     
-}))
+})
+);
 
 
 async function CreateUser(username, password) {
@@ -72,7 +74,7 @@ const partie = new mongoose.Schema({
     Enemy: String,
     State: String,
     nbJeton: Number,
-    mise: String
+    mise: Number
 
 });
 
@@ -134,22 +136,6 @@ expressApp.post("/login", (req, res) => {
 
 
 
-// expressApp.post("/play", (req, res) => {
-
-
-
-
-//     // On le sauvegarde dans MongoDB !
-//     mygame.update(function (err) {
-//         if (err) { throw err; }
-//         console.log('Mise avec succès');
-
-
-//     });
-
-//     res.redirect("liste.html")
-// })
-
 expressApp.get('/games', (req, res) => {
     GameModel.find({}, 'name nbJeton', function (err, bddgame) {
         res.json(bddgame)
@@ -168,4 +154,17 @@ expressApp.delete("/deleteGames/:id", (req, res) => {
 
 })
 
+expressApp.post('/logout',(req,res)=>{
+    req.session.destroy((err)=> {
+        if(err)throw err;
+        console.log("On se déconnecte");
+        res.redirect('/')
+    })
+})
 
+expressApp.post('/play/:id',(req,res)=>{
+    GameModel.addListener({'mise':req.body.mise},async function(err,bddgame){
+
+    })
+    
+})
